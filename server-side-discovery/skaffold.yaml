@@ -1,0 +1,22 @@
+apiVersion: skaffold/v2beta10
+kind: Config
+build:
+  artifacts:
+  - image: service-a
+    context: service-a
+  - image: service-b
+    context: service-b
+deploy:
+  kubectl:
+    manifests:
+      - service-a/k8s/*
+      - service-b/k8s/*
+portForward:
+  - resourceType: deployment
+    resourceName: service-a
+    port: 80
+    localPort: 9000
+  - resourceType: deployment
+    resourceName: service-b
+    port: 80
+    localPort: 9001
