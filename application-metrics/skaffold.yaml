@@ -1,0 +1,25 @@
+apiVersion: skaffold/v2beta10
+kind: Config
+build:
+  artifacts:
+  - image: service-a
+    context: service-a
+deploy:
+  kubectl:
+    manifests:
+      - grafana/k8s/deployment.yaml
+      - prometheus/k8s/*
+      - service-a/k8s/*
+portForward:
+  - resourceType: deployment
+    resourceName: grafana
+    port: 3000
+    localPort: 3000
+  - resourceType: deployment
+    resourceName: prometheus
+    port: 9090
+    localPort: 9090
+  - resourceType: deployment
+    resourceName: service-a
+    port: 80
+    localPort: 9000
